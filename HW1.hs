@@ -18,15 +18,16 @@ import System.Exit
 mySum :: [Int] -> Int
 mySum []     = 0
 mySum (x:xs) = x + mySum xs
+-- above is example
 
 -- Problem 2 (5+15 = 20 points)
-qsort1 :: Ord a => [a] -> [a]
+qsort1 :: Ord a => [a] -> [a]  -- Function signature for the qsort1 function.
 ---- Question 2.1 (5 points)
-qsort1 [] = []
-qsort1 (x:xs) = qsort1 larger ++ [x] ++ qsort1 smaller
+qsort1 [] = []  -- This is a base case for the qsort1 function of qsort1([]) = [].
+qsort1 (x:xs) = qsort1 larger ++ [x] ++ qsort1 smaller  -- This line takes the head and tail, then calls recursively on the set of larger numbers, inserts the head, then calls recursively on the set of smaller numbers.
   where
-    larger = [y | y <- xs, y >= x]
-    smaller = [y | y <- xs, y < x]
+    larger = [y | y <- xs, y >= x]  -- This line creates a list of all numbers in the tail that are greater than or equal to the head.
+    smaller = [y | y <- xs, y < x]  -- This line creates a list of all numbers in the tail that are less than the head.
 
 ---- Question 2.2 (15 points)
 {-
@@ -49,22 +50,22 @@ Hopefully the flow here makes sense to you.
 -}
 
 -- Problem 3 (10 points)
-lucas :: Int -> Int
-lucas 0 = 2
-lucas 1 = 1
-lucas n = lucas (n - 1) + lucas (n - 2)
+lucas :: Int -> Int  -- Function signature for the lucas function.
+lucas 0 = 2  -- This is a base case for the lucas function of lucas(0) = 2.
+lucas 1 = 1  -- This is a base case for the lucas function of lucas(1) = 1.
+lucas n = lucas (n - 1) + lucas (n - 2)  -- This is the recursive case for the lucas function, which is the sum of the two previous numbers in the sequence. This then calls recursively until the base cases are reached.
 
 -- Problem 4 (10 points)
-factorial :: Int -> Int
-factorial 0 = 1
-factorial n = n * factorial (n - 1)
+factorial :: Int -> Int  -- Function signature for the factorial function.
+factorial 0 = 1  -- This is a base case for the factorial function of factorial(0) = 1.
+factorial n = n * factorial (n - 1)  -- This simply computes the factorial, or n * (n - 1) * (n - 2) * ... * 1, of the input n until it hits the base case of n = 0.
 
 -- Problem 5 (5+10+10=25 points)
 ---- Question 5.1 (5 points)
-semifactorial :: Int -> Int
-semifactorial n
-    | n <= 1 = 1
-    | True = n * semifactorial (n - 2)
+semifactorial :: Int -> Int  -- Function signature for the semifactorial function.
+semifactorial n  -- start of function
+    | n <= 1 = 1  -- This is a base case for the semifactorial function of semifactorial(0) = 1 and semifactorial(1) = 1.
+    | True = n * semifactorial (n - 2)  -- This computes the semifactorial, or n * (n - 2) * (n - 4) * ... * 1, of the input n until it hits the base case of n = 1. So if n is odd it will multiply all the odd numbers up to n, and if n is even it will multiply all the even numbers up to n.
 
 ---- Question 5.2 (10 points)
 {-
@@ -82,20 +83,20 @@ Or, in other words, it would be called seven times before reaching the base case
 -}
 
 ---- Question 5.3 (10 points)
-myfactorial :: Int -> Int
-myfactorial n
-    | n <= 1 = 1
-    | True = semifactorial n * semifactorial (n - 1)
+myfactorial :: Int -> Int  -- Function signature for the myfactorial function.
+myfactorial n  -- start of function
+    | n <= 1 = 1  -- This is a base case for the myfactorial function of myfactorial(0) = 1 and myfactorial(1) = 1.
+    | True = semifactorial n * semifactorial (n - 1)  -- This computes the factorial of the input n by multiplying the semifactorial of n and the semifactorial of n - 1. This then covers all the numbers below n.
 
 
 -- Problem 6 (10+15+10=35 points)
 ---- Question 6.1 (10 points)
-term :: Num a => Int -> a -> a
-term n x = x ^ n
+term :: Num a => Int -> a -> a  -- Function signature for the term function.
+term n x = x ^ n  -- Simply computes x^n for the input n and x.
 
 ---- Question 6.2 (15 points)
-polynaive :: Num a => [a] -> Int -> a -> a
-polynaive coeffs degree x = sum [c * term n x | (c, n) <- zip coeffs [degree, degree-1..0]]
+polynaive :: Num a => [a] -> Int -> a -> a  -- Function signature for the polynaive function.
+polynaive coeffs degree x = sum [c * term n x | (c, n) <- zip coeffs [degree, degree-1..0]]  -- This computes the polynomial given coefficients, degree, and x. It zips the coeffs with the degree, then calls term on each pair of coefficient and degree, then multiplies the coefficient by the term, and finally sums all the terms together.
 
 ---- Question 6.3 (10 points)
 {-
