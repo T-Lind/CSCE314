@@ -185,8 +185,111 @@ instance Show a => Show (BST a) where
   show EmptyBST = "EmptyBST"
   show (BSTNode a left right) = "BSTNode " ++ show a ++ " (" ++ show left ++ ") (" ++ show right ++ ")"
 
+data NTree a = NLeaf a | Branch [NTree a]
+
+type Points = Int  -- type keywords is used to define aliases, not new types.
+
+ntree1 :: NTree Int
+ntree1 = Branch [
+          Branch [
+            NLeaf 2,
+            NLeaf 4
+          ],
+          Branch [
+            Branch [
+              NLeaf 5
+            ],
+            Branch [
+              NLeaf 9
+            ]
+          ]
+         ]
+
+instance Show a => Show (NTree a) where
+  show (NLeaf a) = "Leaf(" ++ show a ++ ")"
+  show (Branch b) = "Branch(" ++ show b ++ ")"
+
+ntreeDepth :: NTree a -> Int
+ntreeDepth (NLeaf _) = 1
+ntreeDepth (Branch []) = 0
+ntreeDepth (Branch bs) = 1 + maximum (map ntreeDepth bs)
+
+newtype Stack a = Stack [a]
+push :: a -> Stack a -> Stack a
+push x (Stack xs) = Stack (x:xs)
+
+pop :: Stack a -> Maybe (Stack a, a)
+pop (Stack []) = Nothing
+pop (Stack (x:xs)) = Just (Stack xs, x)
+
+peek :: Stack a -> Maybe a
+peek (Stack []) = Nothing
+peek (Stack (x:_)) = Just x
+
+isEmpty :: Stack a -> Bool
+isEmpty (Stack xs) = length xs == 0
+
+emptyStack :: Stack a
+emptyStack = Stack []
+
+instance Show a => Show (Stack a) where
+  show (Stack xs) = "Stack:\n" ++ unlines (map (\x -> " " ++ show x) (reverse xs))
+
+getPopStack:: Maybe (Stack a, a) -> Stack a
+getPopStack Nothing = Stack []
+getPopStack (Just (Stack stack, _)) = Stack stack
+
+getPopped :: Maybe (Stack a, a) -> a
+getPopped Nothing = error "No element to pop"
+getPopped (Just (_, x)) = x
+
+-- MONADS --
+
+data Try a = Success a | Failure String
+instance Show a => Show (Try a) where
+  show (Success a) = "Success: " ++ show a
+  show (Failure msg) = "Failure: " ++ msg
+
+instance Functor Try where
+  fmap f (Success a) = Success (f a)
+  fmap _ (Failure msg) = Failure msg
+
+instance Applicative Try where
+  pure = Success
+  (Success f) <*> (Success a) = Success (f a)
+  (Failure msg) <*> _ = Failure msg
+  _ <*> (Failure msg) = Failure msg
+
+instance Monad Try where
+  return = pure
+  (Success a) >>= f = f a
+  (Failure msg) >>= _ = Failure msg
+
+-- Example application:
+divide :: Int -> Int -> Try Int
+divide _ 0 = Failure "Division by zero"
+divide a b = Success (a `div` b)
+
+filterTry :: (a -> Bool) -> [a] -> Try [a]
+filterTry _ [] = Failure "No items in list."
+filterTry f xs = Success (filter f xs)
+
+computation :: Try Int
+computation = do
+  x <- divide 10 2
+  y <- divide 20 x
+  return (y + 5)
+
+computation2 :: Try [Int]
+computation2 = do
+  let xs = map (\x -> 3^x - 11*x) [1..9]
+  ys <- filterTry even xs
+  return ys
+
 main = do
   let x = [1..10]
+
+  -- BASIC EXAMPLE FUNCTIONS --
   putStr("Input List: ")
   putStrLn(show(x))
   putStr("Squared List: ")
@@ -206,6 +309,8 @@ main = do
   putStr("Safezip on unequal lengths: ")
   let aTail = tail a
   putStrLn(show(safezip aTail b))
+
+  -- CUSTOM TYPES --
   let c = Circle 5
   let r = Rectangle 4 3
   putStrLn("Given two shapes, ")
@@ -222,4 +327,31 @@ main = do
   let p = Person "George" 31 "Engineer"
   print p
 
+  -- BINARY SEARCH TREE --
+  putStrLn("Binary Search Tree: ")
   print(bst1)
+  print(bstMap (\x -> 100 `div` x) bst1)
+  putStrLn("NTree: ")
+  print(ntree1)
+
+  -- STACK --
+  let s1 = push 5 (emptyStack :: Stack Int)
+  let s2 = push 9 s1
+  let s3 = push 13 s2
+  let s4 = push 2 s3
+  -- Pop and print
+  putStrLn "Working with Stack (initially set to 5-9-13-2): "
+  let popRes = pop s4
+  let s5 = getPopStack popRes
+  putStr "Popped value: "
+  print (getPopped popRes)
+  print s5
+  let s6 = getPopStack (pop (getPopStack (pop (getPopStack (pop s5)))))
+  let pop2Res = pop s6  -- this will run ok, and be nothing since nothing could be popped
+--  print (getPopped pop2Res)  -- this will throw an error, because there is nothing popped
+
+  -- MONADS --
+  putStr "Monad Computation 1 results: "
+  print computation
+  putStr "Monad Computation 2 results: "
+  print computation2
