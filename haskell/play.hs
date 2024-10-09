@@ -83,8 +83,8 @@ doubleEvens xs = map (*2) (filter' even xs)
 prodFoldr :: Num a => [a] -> a
 prodFoldr = foldr (*) 1
 
-reverseFoldl :: Num a => [a] -> [a]
-reverseFoldl = foldl (flip (:)) []
+reverseFoldl :: Num a => (c -> d) -> [a] -> [a]
+reverseFoldl = foldl (flip (:))
 
 data Shape = Circle Double | Rectangle Double Double
 
@@ -286,6 +286,37 @@ computation2 = do
   ys <- filterTry even xs
   return ys
 
+xs >>= f = [y | x <- xs, y <- f x]
+--fun js ks = js >>= \s -> ks >>= \t -> return (s, t)
+--fun2 js ks = js >>= bind1  -- note these two are equivalent! I prefer the second one
+--  where
+--    bind1 s = ks >>= bind2
+--      where
+--        bind2 t = return (s, t)
+--
+--combineLists :: [Int] -> [Int] -> [Int]
+--combineLists xs ys = xs >>= bind1
+--  where
+--    bind1 x = ys >>= bind2
+--      where
+--        bind2 y = return (x + y)
+
+
+
+-- FUNCTORS --
+data XEither a b = XLeft a | XRight b
+instance Functor (XEither a) where
+  fmap _ (XLeft x) = XLeft x
+  fmap f (XRight y) = XRight (f y)
+
+safeDivide :: Float -> Float -> XEither String Float
+safeDivide _ 0 = XLeft "Error: division by zero"
+safeDivide x y = XRight (x / y)
+
+processSafeDivide :: XEither String Float -> String
+processSafeDivide (XLeft error) = "Calculation failed: " ++ error
+processSaveDivide (XRight result) = "Result: " ++ show result
+
 main = do
   let x = [1..10]
 
@@ -355,3 +386,5 @@ main = do
   print computation
   putStr "Monad Computation 2 results: "
   print computation2
+
+  print (processSafeDivide (safeDivide 10 0))
