@@ -91,15 +91,29 @@ You should see this output:
 
 ```
 Vehicle{currentSpeed=50, currentDirection=0, ownerName='Owner0', vehicleID=1}
-Vehicle{currentSpeed=51, currentDirection=10, ownerName='Owner1', vehicleID=2}    
-Vehicle{currentSpeed=52, currentDirection=20, ownerName='Owner2', vehicleID=3}    
-Vehicle{currentSpeed=53, currentDirection=30, ownerName='Owner3', vehicleID=4}    
-Vehicle{currentSpeed=54, currentDirection=40, ownerName='Owner4', vehicleID=5}    
-Vehicle{currentSpeed=55, currentDirection=50, ownerName='Owner5', vehicleID=6}    
-Vehicle{currentSpeed=56, currentDirection=60, ownerName='Owner6', vehicleID=7}    
-Vehicle{currentSpeed=57, currentDirection=70, ownerName='Owner7', vehicleID=8}    
-Vehicle{currentSpeed=58, currentDirection=80, ownerName='Owner8', vehicleID=9}    
-Vehicle{currentSpeed=59, currentDirection=90, ownerName='Owner9', vehicleID=10}  
+Vehicle{currentSpeed=51, currentDirection=10, ownerName='Owner1', vehicleID=2}
+Vehicle{currentSpeed=52, currentDirection=20, ownerName='Owner2', vehicleID=3}
+Vehicle{currentSpeed=53, currentDirection=30, ownerName='Owner3', vehicleID=4}
+Vehicle{currentSpeed=54, currentDirection=40, ownerName='Owner4', vehicleID=5}
+Vehicle{currentSpeed=55, currentDirection=50, ownerName='Owner5', vehicleID=6}
+Vehicle{currentSpeed=56, currentDirection=60, ownerName='Owner6', vehicleID=7}
+Vehicle{currentSpeed=57, currentDirection=70, ownerName='Owner7', vehicleID=8}
+Vehicle{currentSpeed=58, currentDirection=80, ownerName='Owner8', vehicleID=9}
+Vehicle{currentSpeed=59, currentDirection=90, ownerName='Owner9', vehicleID=10}
+
+Testing changeSpeed method:
+Vehicle 0 new speed: 100
+
+Testing stop method:
+Vehicle 1 new speed: 0
+
+Testing turn method with degrees:
+Vehicle 2 new direction: 65
+
+Testing turn method with direction:
+Vehicle 3 new direction: 300
+Vehicle 4 new direction: 130
+
 ```
 
 ----------
