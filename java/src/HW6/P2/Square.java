@@ -1,27 +1,31 @@
-package HW6;
+package HW6.P2;
 /* Skeleton provided by Hyunyoung Lee
    For CSCE 314 [Sections 598, 599] Fall 2024, Assignment 6 Problem 2
 
-   Student Name:
-   UIN:
+   Student Name: Tiernan Lindauer
+   UIN: 134003853
    Acknowledgements:
 */
 
-import java.lang.Math;
-
 class Square extends Shape {
-    private double side;
+    private double side; // side is the side length
 
+    // constructor that accepts a Point (for position) and a double
+    // (for the side length).
     public Square(Point p0, double side) {
         super(p0);
         this.side = side;
     }
 
+    // implement equals(), hashCode(), area(), and toString()
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Square)) return false;
-        Square square = (Square) o;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Square square)) {
+            return false;
+        }
         return Double.compare(square.side, side) == 0 && position.equals(square.position);
     }
 
@@ -39,4 +43,4 @@ class Square extends Shape {
     public String toString() {
         return "Square at " + position + " with side " + side;
     }
-}
+} // end of class Square

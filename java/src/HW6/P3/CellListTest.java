@@ -1,15 +1,14 @@
-package HW6;
+package HW6.P3;
 /* 
    CellListTest.java skeleton written by Hyunyoung Lee
    For CSCE 314 [Sections 598, 599] Fall 2024, Assignment 6 Problem 4
    Feel free to "expand" the main, but do not remove the original contents
 
-   Student Name:
-   UIN:
+   Student Name: Tiernan Lindauer
+   UIN: 134003853
    Acknowledgements:
 */
 
-import java.util.Iterator;
 import java.util.Arrays;
 
 import static java.lang.System.out;

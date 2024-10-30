@@ -1,9 +1,9 @@
-package HW6;
+package HW6.P2;
 /* Skeleton provided by Hyunyoung Lee
    For CSCE 314 [Sections 598, 599] Fall 2024, Assignment 6 Problem 2
  
-   Student Name:
-   UIN:
+   Student Name: Tiernan Lindauer
+   UIN: 134003853
    Acknowledgements:
 */
 

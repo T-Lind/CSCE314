@@ -1,10 +1,10 @@
-package HW6;
+package HW6.P3;
 /*   
    CellList.java skeleton written by Hyunyoung Lee
    For CSCE 314 [Sections 598, 599] Fall 2024, Assignment 6 Problem 4
 
-   Student Name:
-   UIN:
+   Student Name: Tiernan Lindauer
+   UIN: 134003853
    Acknowledgements:
 */
 
@@ -23,14 +23,13 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
         return n.iterator();
     }
 
-    // Task 1: Clone implementation
+    // Task 1: override clone() (5 points)
     @Override
     public CellList<E> clone() {
         CellList<E> cloned = new CellList<>();
         for (E item : this) {
             cloned.push(item);
         }
-        // Reverse the list since push adds to front
         CellList<E> result = new CellList<>();
         for (E item : cloned) {
             result.push(item);
@@ -40,21 +39,21 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
 
     @Override
     public int compareTo(CellList<E> list) {
-        if (this.length < list.length) return -1;
-        if (this.length == list.length) return 0;
-        return 1;
+        return Integer.compare(this.length, list.length);
     }
 
-    // Task 2: Equals implementation
+    // Task 2: override equals() (10 points)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CellList<?>)) return false;
-        CellList<?> other = (CellList<?>) o;
+        if (!(o instanceof CellList<?> other)) {
+            return false;
+        }
 
-        if (this.length != other.length) return false;
+        if (this.length != other.length) {
+            return false;
+        }
 
-        // Convert both lists to arrays for comparison
         ArrayList<Object> thisList = new ArrayList<>();
         ArrayList<Object> otherList = new ArrayList<>();
 
@@ -75,13 +74,13 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
         return length;
     }
 
-    // No-arg constructor
+    // no-arg constructor - given
     public CellList() {
         n = null;
         length = 0;
     }
 
-    // Task 3: One-arg constructor
+    // Task 3: One-arg constructor (5 ponts)
     public CellList(Iterable<E> iterable) {
         this();
         ArrayList<E> temp = new ArrayList<>();
@@ -93,7 +92,8 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
         }
     }
 
-    // Task 4: toString implementation
+    // Task 4: total 20 points for toString(), push() and pop()
+    // 8 points
     public String toString() {
         if (n == null) return "[(head: )]";
 
@@ -111,13 +111,13 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
         return sb.toString();
     }
 
-    // Task 4: push implementation
+    // 5 points
     public void push(E item) {
         n = new Cell<>(item, n);
         length++;
     }
 
-    // Task 4: pop implementation
+    // 7 points
     public E pop() {
         if (n == null) return null;
         E val = n.getVal();
@@ -126,11 +126,12 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
         return val;
     }
 
-    // Given methods
+    // given
     public E peek() {
         return n.getVal();
     }
 
+    // given
     public int getLength() {
         return length;
     }

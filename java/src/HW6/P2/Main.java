@@ -1,19 +1,17 @@
-package HW6;
+package HW6.P2;
 /* Main (file input function) provided by Hyunyoung Lee
    For CSCE 314 [Sections 598, 599] Fall 2024, Assignment 6 Problem 2
    The student is supposed to add the part that outputs the sorted shapes 
    (see below).
 
-   Student Name:
-   UIN:
+   Student Name: Tiernan Lindauer
+   UIN: 134003853
    Acknowledgements:
 */
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 import java.util.Scanner;
 
 import static java.lang.System.*;
@@ -112,19 +110,18 @@ public class Main {
               for (Shape shape : shapes) {
                   System.out.println(shape);
               }
-  
-              // Sort and print shapes by area
+
+              // Task 10 below!!!
               Arrays.sort(shapes);
               System.out.println("\nShapes sorted (area):");
               for (Shape shape : shapes) {
                   System.out.printf("%s (area: %.2f)%n", shape, shape.area());
               }
   
-              // Calculate and print total area
               double totalArea = TotalAreaCalculator.calculate(shapes);
               System.out.printf("\nTotal area of all shapes: %.2f%n", totalArea);
           } else {
-              System.err.println("Usage: java HW6.Main S input_file_name\n");
+              System.err.println("Usage: java HW6.P2.Main S input_file_name\n");
           }
       } catch (IOException e) {
           System.err.println("Error reading file: " + e.getMessage());
