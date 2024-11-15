@@ -92,28 +92,26 @@ class SimBox implements Runnable {
 
         for (; ; ) { // loop forever
             synchronized (messages) {
-                Iterator<Message> iter = messages.iterator();
-                while (iter.hasNext()) {
-                    Message m = iter.next();
-                    if (m.recipient.equals(myId)) {
-                        iter.remove();
-                        myMessages.add(m);
+                synchronized (myMessages) {
+                    Iterator<Message> iter = messages.iterator();
+                    while (iter.hasNext()) {
+                        Message m = iter.next();
+                        if (m.recipient.equals(myId)) {
+                            iter.remove();
+                            myMessages.add(m);
+                        }
                     }
                 }
+                while (messages.size() > MAX_SIZE) {
+                    messages.removeFirst();
+                }
             }
-
-            // end of synchronized myMessages
-            while (messages.size() > MAX_SIZE) {
-                messages.removeFirst();
-            }
-            // end of synchronized messages
             if (stop) return;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         } // endfor
     } // end run()
 } // end SimBox
-
-
