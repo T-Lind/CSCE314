@@ -11,85 +11,65 @@ package HW7;
 import java.util.*;
 
 class SimBox implements Runnable {
-    static final int MAX_SIZE = 10;
+    static final int MAX_SIZE = 10; // max size of message queue
 
     class Message {
-        String sender;
-        String recipient;
-        String msg;
+        String sender; // sender of the message
+        String recipient; // recipient of the message
+        String msg; // content of the message
 
         Message(String sender, String recipient, String msg) {
-            this.sender = sender;
-            this.recipient = recipient;
-            this.msg = msg;
+            this.sender = sender; // init sender
+            this.recipient = recipient; // init recipient
+            this.msg = msg; // init msg
         }
     }
 
-    private final LinkedList<Message> messages;
-    private LinkedList<Message> myMessages;
-    private String myId;
-    private boolean stop = false;
+    private final LinkedList<Message> messages; // shared message queue
+    private LinkedList<Message> myMessages; // private message queue
+    private String myId; // id of this SimBox
+    private boolean stop = false; // flag to stop the thread
 
     public SimBox(String myId) {
-        messages = new LinkedList<Message>();
-        this.myId = myId;
-        this.myMessages = new LinkedList<Message>();
-        new Thread(this).start();
+        messages = new LinkedList<Message>(); // init shared queue
+        this.myId = myId; // init id
+        this.myMessages = new LinkedList<Message>(); // init private queue
+        new Thread(this).start(); // start thread
     }
 
     public SimBox(String myId, SimBox s) {
-        this.messages = s.messages;
-        this.myId = myId;
-        this.myMessages = new LinkedList<Message>();
-        new Thread(this).start();
+        this.messages = s.messages; // share message queue
+        this.myId = myId; // init id
+        this.myMessages = new LinkedList<Message>(); // init private queue
+        new Thread(this).start(); // start thread
     }
 
     public String getId() {
-        return myId;
+        return myId; // return id
     }
 
     public void stop() {
-        // make it so that this Runnable will stop
-        stop = true;
+        stop = true; // set stop flag
     }
 
     public void send(String recipient, String msg) {
-        // add a message to the shared message queue (messages)
-        // you will have to synchronize the message queue
         synchronized (messages) {
-            messages.add(new Message(myId, recipient, msg));
+            messages.add(new Message(myId, recipient, msg)); // add msg to shared queue
         }
     }
 
     public List<String> retrieve() {
-        // return the contents of myMessages
-        // and empty myMessages
-        // you will have to synchronize myMessages
-        // each message should be in the following format:
-        //   From (the sender) to (the recipient) (actual message)
         List<String> result = new ArrayList<>();
         synchronized (myMessages) {
             for (Message m : myMessages) {
-                result.add("From " + m.sender + " to " + m.recipient + " " + m.msg);
+                result.add("From " + m.sender + " to " + m.recipient + " " + m.msg); // format msg
             }
-            myMessages.clear();
+            myMessages.clear(); // clear private queue
         }
-        return result;
+        return result; // return formatted msgs
     }
 
     public void run() {
-        // loop forever
-        // 1. Approximately once every second move all messages
-        //    addressed to this mailbox from the shared message queue
-        //    to the private myMessages queue
-        //    To do so, you need to synchronize messages and myMessages.
-        //    Furthermore, you need to explicitly use the iterator() of messages
-        //    with a while loop.  A for-each loop will not work here.
-        // 2. Also approximately once every second, if the message
-        //    queue has more than MAX_SIZE messages, delete oldest messages
-        //    so that size is at most MAX_SIZE. This part of code is provided
-        //    below.
-
         for (; ; ) { // loop forever
             synchronized (messages) {
                 synchronized (myMessages) {
@@ -97,21 +77,21 @@ class SimBox implements Runnable {
                     while (iter.hasNext()) {
                         Message m = iter.next();
                         if (m.recipient.equals(myId)) {
-                            iter.remove();
-                            myMessages.add(m);
+                            iter.remove(); // remove from shared queue
+                            myMessages.add(m); // add to private queue
                         }
                     }
                 }
                 while (messages.size() > MAX_SIZE) {
-                    messages.removeFirst();
+                    messages.removeFirst(); // remove oldest msgs
                 }
             }
-            if (stop) return;
+            if (stop) return; // stop if flag is set
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000); // sleep for 1 sec
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt(); // handle interrupt
             }
-        } // endfor
-    } // end run()
-} // end SimBox
+        }
+    }
+}
