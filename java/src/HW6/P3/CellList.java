@@ -31,7 +31,7 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
             cloned.push(item);
         }
         CellList<E> result = new CellList<>();
-        for (E item : cloned) {
+        for (E item : cloned) {   // reverse the order
             result.push(item);
         }
         return result;
@@ -45,8 +45,10 @@ public class CellList<E> implements Iterable<E>, Cloneable, Comparable<CellList<
     // Task 2: override equals() (10 points)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CellList<?> other)) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CellList<?> other)) {  // other is a pattern variable that is automatically cast to CellList<?> if type check passes
             return false;
         }
 
