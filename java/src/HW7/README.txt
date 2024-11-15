@@ -41,21 +41,20 @@ Expected output for `SimMain` (Problem 3) depends... Here are two example output
 
 Example 1:
 ```
-From Homer to Marge: My doctor said don't walk.
-From Marge to Homer: That was a traffic signal!
-From Bart to Homer: There’s a 4:30 in the morning now?
-From Homer to Bart: D'oh!
-From Bart to Homer: flooding the message queue...
+From Homer to Marge My doctor said don't walk.
+From Marge to Homer That was a traffic signal!
+From Bart to Homer There’s a 4:30 in the morning now?
+From Homer to Bart D'oh!
+From Bart to Homer flooding the message queue...
 ...
 ```
 
 Example 2:
 ```
-From Homer to Marge: My doctor said don't walk.
-From Marge to Homer: That was a traffic signal!
-From Bart to Homer: There’s a 4:30 in the morning now?
-From Homer to Bart: D'oh!
-From Bart to Homer: flooding the message queue...
+From Homer to Marge My doctor said don't walk.
+From Marge to Homer That was a traffic signal!
+From Bart to Homer There’s a 4:30 in the morning now?
+From Bart to Homer flooding the message queue...
 ...
 ```
 
